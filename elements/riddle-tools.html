@@ -1,0 +1,56 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="caesar-cipher-tool.html">
+
+<polymer-element name="riddle-tools">
+  <template>
+    <style>
+      section {
+        padding: 20px;
+      }
+
+      core-header-panel[navigation] core-toolbar,
+      core-scaffold::shadow core-toolbar {
+        background-color: #070;
+        color: white;
+      }
+    </style>
+    <core-scaffold id="scaffold">
+      <core-header-panel navigation flex mode="seamed" on-click="{{closeMenu}}">
+        <core-toolbar>Riddle Tools</core-toolbar>
+        <core-menu selected="{{menuItem}}">
+          <template repeat="{{menus as menu}}">
+            <paper-item label="{{menu}}"></paper-item>
+          </template>
+        </core-menu>
+      </core-header-panel>
+      <div tool>{{menus[menuItem]}}</div>
+      <main>
+        <core-pages selected="{{menuItem}}">
+          <section>
+            <caesar-cipher-tool></caesar-cipher-tool>
+          </section>
+          <section>
+            Developed by <a href="https://google.com/+GerwinSturm">Gerwin Sturm</a>, <a href="https://www.foldedsoft.at/">FoldedSoft e.U.</a><br><br>
+
+            Source code: <a href="https://github.com/Scarygami/riddle-tools">github.com/Scarygami/riddle-tools</a>
+          </section>
+        </core-pages>
+      </main>
+    </core-scaffold>
+  </template>
+  <script>
+    (function () {
+      Polymer('riddle-tools', {
+        menus: ['Caesar Cipher', 'About'],
+        menuItem: 0,
+        closeMenu: function () {
+          this.$.scaffold.closeDrawer();
+        }
+      });
+    }());
+  </script>
+</polymer-element>

@@ -1,0 +1,27 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="caesar-cipher.html">
+
+<polymer-element name="caesar-cipher-tool">
+  <template>
+    <style>
+      span { min-width: 5em;}
+      div { margin-bottom: 0.5em; }
+    </style>
+    <paper-input inputValue="{{value}}"></paper-input><br>
+    <template repeat="{{rots as rot}}">
+      <div layout horizontal top>
+        <span>ROT-{{rot}}</span>
+        <caesar-cipher text="{{value}}" rot="{{rot}}" flex></caesar-cipher>
+      </div>
+    </template>
+  </template>
+  <script>
+    (function () {
+      Polymer('caesar-cipher-tool', {
+        value: 'Guvf vf n frperg zrffntr!!',
+        rots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+      });
+    }());
+  </script>
+</polymer-element>

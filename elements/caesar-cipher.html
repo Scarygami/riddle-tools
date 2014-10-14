@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="caesar-cipher" attributes="text rot">
+  <template>
+    {{ result }}
+  </template>
+  <script>
+    (function () {
+
+      var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+      Polymer('caesar-cipher', {
+        text: '',
+        rot: 13,
+        result: '',
+        observe: {
+          text: 'update',
+          rot: 'update'
+        },
+        rotate: function (c) {
+          var i = alphabet.indexOf(c.toUpperCase());
+          if (i < 0) { return c; }
+          i = (i + this.rot) % 26;
+          if (c !== c.toUpperCase()) {
+            return alphabet[i].toLowerCase();
+          }
+          return alphabet[i];
+        },
+        update: function () {
+          this.result = this.text.split('').map(this.rotate.bind(this)).join('');
+        }
+      });
+    }());
+  </script>
+</polymer-element>
