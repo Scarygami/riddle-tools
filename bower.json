@@ -18,6 +18,7 @@
     "core-menu": "Polymer/core-menu#master",
     "core-pages": "Polymer/core-pages#master",
     "paper-input": "Polymer/paper-input#master",
+    "paper-checkbox": "Polymer/paper-checkbox#master",
     "paper-item": "Polymer/paper-item#master"
   }
 }

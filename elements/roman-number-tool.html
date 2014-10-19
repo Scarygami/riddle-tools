@@ -1,0 +1,27 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="roman-number-decoder.html">
+
+<polymer-element name="roman-number-tool">
+  <template>
+    <style>
+      span { margin: 0 0.5em;}
+      div { margin-bottom: 0.5em; }
+    </style>
+    <div layout horizontal center>
+    	<paper-input inputValue="{{value}}" value="{{value}}"></paper-input>
+    	<span>Debug mode</span>
+      <paper-checkbox checked="{{debug}}"></paper-checkbox><br>
+    </div>
+    <roman-number-decoder text="{{value}}" debug="{{debug}}"></roman-number-decoder>
+  </template>
+  <script>
+    (function () {
+      Polymer('roman-number-tool', {
+        value: 'MCMDXLVII',
+        debug: false
+      });
+    }());
+  </script>
+</polymer-element>

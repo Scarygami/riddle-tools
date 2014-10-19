@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="caesar-cipher-tool.html">
+<link rel="import" href="roman-number-tool.html">
 
 <polymer-element name="riddle-tools">
   <template>
@@ -34,6 +35,9 @@
             <caesar-cipher-tool></caesar-cipher-tool>
           </section>
           <section>
+            <roman-number-tool></roman-number-tool>
+          </section>
+          <section>
             Developed by <a href="https://google.com/+GerwinSturm">Gerwin Sturm</a>, <a href="https://www.foldedsoft.at/">FoldedSoft e.U.</a><br><br>
 
             Source code: <a href="https://github.com/Scarygami/riddle-tools">github.com/Scarygami/riddle-tools</a>
@@ -45,7 +49,7 @@
   <script>
     (function () {
       Polymer('riddle-tools', {
-        menus: ['Caesar Cipher', 'About'],
+        menus: ['Caesar Cipher', 'Roman Numbers', 'About'],
         menuItem: 0,
         closeMenu: function () {
           this.$.scaffold.closeDrawer();

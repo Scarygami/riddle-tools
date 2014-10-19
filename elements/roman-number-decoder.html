@@ -1,0 +1,99 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="roman-number-decoder" attributes="text debug">
+  <template>
+    <template repeat="{{ result in results }}">
+      {{ result }}
+    </template>
+    <template if="{{ debug }}">
+      <div>
+        Cleaned input: {{ cleaned }}<br>
+        Separated in "numerals":
+        <template repeat="{{ letter in letters }}">
+          {{ letter }}
+        </template><br>
+        Separated in "words":
+        <template repeat="{{ word in words }}">
+          {{ word | join }}
+        </template><br>
+      </div>
+    </template>
+  </template>
+  <script>
+    (function () {
+
+      var letters = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
+      var splits = /(CM|CD|XC|XL|IX|V|IV|[MDCLXVI])/g;
+      var values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+      var invalid_pairs = {
+        'CM': ['C', 'D'],
+        'CD': ['C'],
+        'XC': ['X', 'L'],
+        'XL': ['X'],
+        'IX': ['V', 'I'],
+        'IV': ['I'],
+        'L': ['L', 'XL']
+      };
+
+      function checkPair(prev, next) {
+        if (!invalid_pairs[prev]) { return true; }
+        return (invalid_pairs[prev].indexOf(next) < 0);
+      }
+
+      Polymer('roman-number-decoder', {
+        debug: false,
+        text: '',
+        results: [],
+        cleaned: '',
+        words: [],
+        observe: {
+          text: 'update'
+        },
+        join: function (letters) {
+          return letters.join('');
+        },
+        update: function () {
+          var tmp_word, current_value, current_number;
+          this.cleaned = this.text.toUpperCase().split('').filter(function (c) {
+            return (letters.indexOf(c) >= 0);
+          }).join('');
+
+
+          this.letters = this.cleaned.match(splits);
+          this.results = [];
+          this.words = [];
+
+          if (!!this.letters) {
+            current_value = 1001;
+            current_number = '';
+            tmp_word = [];
+            this.letters.forEach(function (c) {
+              var this_value = values[letters.indexOf(c)];
+              if (this_value <= current_value && checkPair(current_number, c)) {
+                tmp_word.push(c);
+                current_value = this_value;
+                current_number = c;
+              } else {
+                this.words.push(tmp_word);
+                current_value = this_value;
+                current_number = c;
+                tmp_word = [c];
+              }
+            }.bind(this));
+            this.words.push(tmp_word);
+          }
+
+          if (this.words.length > 0) {
+            this.results = this.words.map(function (word) {
+              var result = 0;
+              word.forEach(function (letter) {
+                result += values[letters.indexOf(letter)];
+              });
+              return result;
+            });
+          }
+        }
+      });
+    }());
+  </script>
+</polymer-element>
