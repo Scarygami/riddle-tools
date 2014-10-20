@@ -5,16 +5,18 @@
     <template repeat="{{ result in results }}">
       {{ result }}
     </template>
+    <template if="{{ results.length > 0 }}">
+      / {{ total }}
+    </template>
     <template if="{{ debug }}">
+      <br><br>
       <div>
-        Cleaned input: {{ cleaned }}<br>
-        Separated in "numerals":
-        <template repeat="{{ letter in letters }}">
-          {{ letter }}
-        </template><br>
-        Separated in "words":
-        <template repeat="{{ word in words }}">
-          {{ word | join }}
+        Cleaned: {{ cleaned }}<br>
+        Valid parts: {{ letters | join(' / ') }}<br>
+        Valid numbers:
+        <template repeat="{{ word, i in words }}">
+          <template if="{{ i > 0 }}">/</template>
+          {{ word | join('') }}
         </template><br>
       </div>
     </template>
@@ -32,7 +34,9 @@
         'XL': ['X'],
         'IX': ['V', 'I'],
         'IV': ['I'],
-        'L': ['L', 'XL']
+        'L': ['L', 'XL'],
+        'V': ['IV'],
+        'D': ['D', 'CD']
       };
 
       function checkPair(prev, next) {
@@ -44,16 +48,17 @@
         debug: false,
         text: '',
         results: [],
+        total: 0,
         cleaned: '',
         words: [],
         observe: {
           text: 'update'
         },
-        join: function (letters) {
-          return letters.join('');
+        join: function (letters, sep) {
+          return letters.join(sep);
         },
         update: function () {
-          var tmp_word, current_value, current_number;
+          var tmp_word, current_value, current_number, count;
           this.cleaned = this.text.toUpperCase().split('').filter(function (c) {
             return (letters.indexOf(c) >= 0);
           }).join('');
@@ -62,22 +67,27 @@
           this.letters = this.cleaned.match(splits);
           this.results = [];
           this.words = [];
+          this.total = 0;
 
           if (!!this.letters) {
             current_value = 1001;
             current_number = '';
+            count = {'I': 0, 'X': 0, 'C': 0};
             tmp_word = [];
             this.letters.forEach(function (c) {
               var this_value = values[letters.indexOf(c)];
-              if (this_value <= current_value && checkPair(current_number, c)) {
+              if (this_value <= current_value && checkPair(current_number, c) && (!count[c] || count[c] < 4)) {
                 tmp_word.push(c);
                 current_value = this_value;
                 current_number = c;
+                if (count[c] !== undefined) { count[c]++; }
               } else {
                 this.words.push(tmp_word);
                 current_value = this_value;
                 current_number = c;
                 tmp_word = [c];
+                count = {'I': 0, 'X': 0, 'C': 0};
+                if (count[c] !== undefined) { count[c]++; }
               }
             }.bind(this));
             this.words.push(tmp_word);
@@ -89,8 +99,9 @@
               word.forEach(function (letter) {
                 result += values[letters.indexOf(letter)];
               });
+              this.total += result;
               return result;
-            });
+            }.bind(this));
           }
         }
       });

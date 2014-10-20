@@ -10,7 +10,7 @@
       div { margin-bottom: 0.5em; }
     </style>
     <div layout horizontal center>
-    	<paper-input inputValue="{{value}}" value="{{value}}"></paper-input>
+    	<paper-input inputValue="{{value}}" value="{{value}}" flex></paper-input>
     	<span>Debug mode</span>
       <paper-checkbox checked="{{debug}}"></paper-checkbox><br>
     </div>
@@ -19,7 +19,7 @@
   <script>
     (function () {
       Polymer('roman-number-tool', {
-        value: 'MCMDXLVII',
+        value: 'omnis agit sva dona dies',
         debug: false
       });
     }());
