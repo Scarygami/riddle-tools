@@ -30,7 +30,7 @@
     <core-scaffold id="scaffold">
       <core-header-panel navigation flex mode="seamed" on-click="{{closeMenu}}">
         <core-toolbar>Riddle Tools</core-toolbar>
-        <core-menu selected="{{menuItem}}">
+        <core-menu selected="{{menuItem}}" on-core-select="{{updateMenu}}">
           <template repeat="{{menus as menu}}">
             <paper-item label="{{menu}}"></paper-item>
           </template>
@@ -55,14 +55,31 @@
     </core-scaffold>
   </template>
   <script>
-    (function () {
+    (function (global) {
+      var hash = global.location.hash;
       Polymer('riddle-tools', {
         menus: ['Caesar Cipher', 'Roman Numbers', 'About'],
+        hashes: ['#caesar', '#roman', '#about'],
         menuItem: 0,
         closeMenu: function () {
           this.$.scaffold.closeDrawer();
+        },
+        updateMenu: function () {
+          global.location.hash = this.hashes[this.menuItem];
+        },
+        checkHash: function () {
+          this.menuItem = this.hashes.indexOf(global.location.hash);
+          if (this.menuItem < 0) {
+            this.menuItem = 0;
+          }
+        },
+        ready: function () {
+          this.checkHash(hash);
+          global.addEventListener("hashchange", function () {
+            this.checkHash(global.location.hash);
+          }.bind(this), false);
         }
       });
-    }());
+    }(this));
   </script>
 </polymer-element>
