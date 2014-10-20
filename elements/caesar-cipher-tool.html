@@ -7,7 +7,11 @@
     <style>
       span { min-width: 5em;}
       div { margin-bottom: 0.5em; }
+      paper-input { width: 100%; }
     </style>
+    <p>The <a href="http://en.wikipedia.org/wiki/Caesar_cipher">Caesar Cipher</a> is probably the easiest cipher you will come across.<br>
+    It's a <a href="http://en.wikipedia.org/wiki/Substitution_cipher">substitution cipher</a> where each letter of the alphabet is replaced by a letter a fixed amount of positions up or down the alphabet.<br>
+    E.g. for a shift of 3, A will become D, B will become E, etc.</p>
     <paper-input inputValue="{{value}}" value="{{value}}"></paper-input><br>
     <template repeat="{{rots as rot}}">
       <div layout horizontal top>

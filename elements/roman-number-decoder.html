@@ -5,7 +5,7 @@
     <template repeat="{{ result in results }}">
       {{ result }}
     </template>
-    <template if="{{ results.length > 0 }}">
+    <template if="{{ results.length > 1 }}">
       / {{ total }}
     </template>
     <template if="{{ debug }}">
